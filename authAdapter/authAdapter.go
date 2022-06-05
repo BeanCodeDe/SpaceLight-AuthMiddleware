@@ -51,16 +51,9 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.ErrUnauthorized
 		}
 
-		claims := &Claims{}
-		tkn, err := jwt.ParseWithClaims(authHeader, claims, func(token *jwt.Token) (interface{}, error) {
-			return verifyKey, nil
-		})
+		claims, err := ParseToken(authHeader)
 		if err != nil {
-			return fmt.Errorf("claim could not be parsed: %v", err)
-		}
-
-		if tkn == nil || !tkn.Valid {
-			return fmt.Errorf("token is not valid: %v", err)
+			return echo.ErrUnauthorized
 		}
 
 		var token string
@@ -79,6 +72,22 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		c.Set(AuthName, token)
 		return next(c)
 	}
+}
+
+func ParseToken(tokenString string) (*Claims, error) {
+	claims := &Claims{}
+	tkn, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return verifyKey, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("claim could not be parsed: %v", err)
+	}
+
+	if tkn == nil || !tkn.Valid {
+		return nil, fmt.Errorf("token is not valid: %v", err)
+	}
+
+	return claims, nil
 }
 
 func createJWTToken(token string) (string, error) {
