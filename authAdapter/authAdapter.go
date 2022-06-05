@@ -1,4 +1,4 @@
-package auth
+package authAdapter
 
 import (
 	"crypto/rsa"
