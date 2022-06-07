@@ -58,7 +58,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 
 		var token string
 
-		if time.Now().Add(-1 * time.Minute).After(time.Unix(claims.ExpiresAt, 0)) {
+		if time.Now().Add(1 * time.Minute).After(time.Unix(claims.ExpiresAt, 0)) {
 			token, err = createJWTToken(authHeader)
 			if err != nil {
 				return echo.ErrUnauthorized
