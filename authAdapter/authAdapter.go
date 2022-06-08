@@ -72,7 +72,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set(ClaimName, claims)
-		c.Set(AuthName, token)
+		c.Response().Header().Set(AuthName, token)
 		return next(c)
 	}
 }
