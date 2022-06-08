@@ -48,14 +48,12 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get(AuthName)
 		if authHeader == "" {
-			fmt.Println("No auth Header found")
-			return echo.ErrUnauthorized
+			return fmt.Errorf("no auth Header found")
 		}
 
 		claims, err := ParseToken(authHeader)
 		if err != nil {
-			fmt.Printf("Error while parsing token: %v", err)
-			return echo.ErrUnauthorized
+			return fmt.Errorf("error while parsing token: %v", err)
 		}
 
 		var token string
@@ -63,8 +61,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		if time.Now().Add(1 * time.Minute).After(time.Unix(claims.ExpiresAt, 0)) {
 			token, err = createJWTToken(authHeader)
 			if err != nil {
-				fmt.Printf("Error while creating token: %v", err)
-				return echo.ErrUnauthorized
+				return fmt.Errorf("error while creating token: %v", err)
 			}
 			c.Response().Header().Set(AuthName, token)
 		} else {
