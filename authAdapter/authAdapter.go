@@ -19,7 +19,7 @@ const ClaimName = "claim"
 
 type Claims struct {
 	UserId uuid.UUID `json:"UserId"`
-	Roles  []string  `json:"Foles"`
+	Roles  []string  `json:"Roles"`
 	jwt.StandardClaims
 }
 
