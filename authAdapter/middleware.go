@@ -32,7 +32,7 @@ func CheckToken(next echo.HandlerFunc) echo.HandlerFunc {
 		} else {
 			token = authHeader
 		}
-
+		log.Errorf("ALL OKAY. TOKEN: %s ||| claim: %v", token, claims)
 		c.Set(ClaimName, claims)
 		c.Response().Header().Set(AuthName, token)
 		return next(c)
@@ -44,7 +44,7 @@ func CheckRole(allowedRoles ...string) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			claims, ok := c.Get(ClaimName).(Claims)
 			if !ok {
-				log.Error("Got data of wrong type", c.Get(ClaimName))
+				log.Errorf("Got data of wrong type: %v", c.Get(ClaimName))
 				return echo.ErrUnauthorized
 			}
 
