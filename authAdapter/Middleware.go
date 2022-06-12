@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-func CheckPassword(next echo.HandlerFunc) echo.HandlerFunc {
+func CheckToken(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get(AuthName)
 		if authHeader == "" {
