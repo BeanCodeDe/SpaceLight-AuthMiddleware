@@ -7,11 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
-	"github.com/labstack/echo/v4"
 )
 
 const AuthName = "auth"
@@ -43,36 +41,6 @@ func Init() error {
 	}
 
 	return nil
-}
-
-func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		authHeader := c.Request().Header.Get(AuthName)
-		if authHeader == "" {
-			return fmt.Errorf("no auth Header found")
-		}
-
-		claims, err := ParseToken(authHeader)
-		if err != nil {
-			return fmt.Errorf("error while parsing token: %v", err)
-		}
-
-		var token string
-
-		if time.Now().Add(1 * time.Minute).After(time.Unix(claims.ExpiresAt, 0)) {
-			token, err = createJWTToken(authHeader)
-			if err != nil {
-				return fmt.Errorf("error while creating token: %v", err)
-			}
-			c.Response().Header().Set(AuthName, token)
-		} else {
-			token = authHeader
-		}
-
-		c.Set(ClaimName, claims)
-		c.Response().Header().Set(AuthName, token)
-		return next(c)
-	}
 }
 
 func ParseToken(tokenString string) (*Claims, error) {
