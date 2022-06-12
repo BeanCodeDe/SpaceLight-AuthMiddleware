@@ -32,8 +32,7 @@ func CheckToken(next echo.HandlerFunc) echo.HandlerFunc {
 		} else {
 			token = authHeader
 		}
-		log.Errorf("ALL OKAY. TOKEN: %s ||| claim: %v", token, claims)
-		c.Set(ClaimName, claims)
+		c.Set(ClaimName, *claims)
 		c.Response().Header().Set(AuthName, token)
 		return next(c)
 	}
