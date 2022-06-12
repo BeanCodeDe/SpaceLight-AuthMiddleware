@@ -12,8 +12,13 @@ import (
 	"github.com/google/uuid"
 )
 
-const AuthName = "auth"
-const ClaimName = "claim"
+const (
+	AuthName        = "auth"
+	ClaimName       = "claim"
+	UserRole        = "user"
+	ServiceRole     = "service"
+	DataServiceRole = "service_data"
+)
 
 type Claims struct {
 	UserId uuid.UUID `json:"UserId"`
