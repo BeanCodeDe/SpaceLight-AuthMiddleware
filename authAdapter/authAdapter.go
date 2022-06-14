@@ -13,11 +13,12 @@ import (
 )
 
 const (
-	AuthName        string = "auth"
-	ClaimName       string = "claim"
-	UserRole        string = "user"
-	ServiceRole     string = "service"
-	DataServiceRole string = "service_data"
+	AuthName         string = "auth"
+	ClaimName        string = "claim"
+	UserRole         string = "user"
+	ServiceRole      string = "service"
+	DataServiceRole  string = "service_data"
+	MatchServiceRole string = "service_match_server"
 )
 
 type Claims struct {
